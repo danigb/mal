@@ -2,9 +2,19 @@
 
 module.exports = Env;
 
-function Env(outer) {
+function assert(condition, message) {
+  if (!condition) throw "ERROR: " + message;
+}
+
+function Env(outer, binds, exprs) {
   this.outer = outer;
   this.data = {};
+  binds = binds || []
+  exprs = exprs || []
+  assert(binds.length == exprs.length, "binds and exprs should have same length.");
+  for(var i = 0; i < binds.length; i++) {
+    this.data[binds[i]] = exprs[i];
+  }
 }
 
 Env.prototype.set = function(symbol, value) {
